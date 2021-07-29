@@ -1,0 +1,27 @@
+{
+    "name": "dennis-sterkado/yii2-cron-manager",
+    "description": "Simple and flexible background tasks manager module for Yii2 framework",
+    "keywords": ["cron", "crontab", "yii2", "background", "tasks", "manager", "module"],
+    "type": "yii2-extension",
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "yii2tech/crontab": "^1.0"
+    },
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Pavel",
+            "email": "jaeden@mail.ru"
+        },
+        {
+            "name": "Dennis",
+            "email": "dennisstolwijk@sterkado.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "sterkado\\crontab\\": "src"
+        }
+    },
+    "minimum-stability": "stable"
+}
