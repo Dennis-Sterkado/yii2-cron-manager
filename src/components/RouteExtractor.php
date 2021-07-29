@@ -4,7 +4,7 @@ namespace sterkado\crontab\components;
 
 /**
  * Creates an array of routes from console controller actions
- * @example: 
+ * @example:
  * $extractor = new RouteExtractor($classname);
  * $extractor->getRoutes();
  */
@@ -26,9 +26,9 @@ class RouteExtractor extends \ReflectionClass
 
                 $action = preg_replace("/^action/", '', $method->name);
 
-                $route = "/" . $this->hyphenize($class) . "/" . $this->hyphenize($action);
+                $route = strtolower("/" . $this->hyphenize($class) . "/" . $this->hyphenize($action));
 
-                $routes[$route] = $this->normalizeName(strtolower($route));
+                $routes[$route] = $route;
             }
         }
 
@@ -45,26 +45,5 @@ class RouteExtractor extends \ReflectionClass
         $array = preg_split("/(?=[A-Z])/", lcfirst($string));
 
         return implode('-', $array);
-    }
-
-    /**
-     * Format route name for humans
-     * @param string $string
-     * @return string
-     */
-    public function normalizeName($string): string
-    {
-        $array = explode('/', $string);
-
-        foreach ($array as $key => $value) {
-            if (empty($value)) {
-                unset($array[$key]);
-                continue;
-            }
-
-            $array[$key] = ucfirst($value);
-        }
-
-        return implode(' - ', $array);
     }
 }
