@@ -2,6 +2,7 @@
 
 namespace sterkado\crontab\commands;
 
+use Cron\CronExpression;
 use sterkado\crontab\models\CronTask;
 use sterkado\crontab\models\CronTaskLog;
 use yii\console\Controller;
@@ -22,7 +23,7 @@ class ExecController extends Controller
      * Each run is being logged to database via CronTaskLog model or if it's set, sending it to console output.
      * Console output may be handled
      * @see \sterkado\crontab\Module $outputSetting
-     *   
+     *
      * @param integer $id CronTask::$id
      * @return integer
      */
@@ -35,6 +36,28 @@ class ExecController extends Controller
             return ExitCode::DATAERR;
         }
 
+        return $this->runSingleTask($model);
+    }
+
+    public function actionRun()
+    {
+        $models = CronTask::find()
+            ->where(['is_enabled' => 1])
+            ->all();
+
+        foreach($models as $model) {
+            if(CronExpression::factory($model->schedule)->isDue()) {
+                $this->runSingleTask($model);
+            }
+        }
+    }
+
+    /**
+     * @param CronTask $model
+     * @return int
+     */
+    private function runSingleTask(CronTask $model): int
+    {
         ob_start();
 
         try {
